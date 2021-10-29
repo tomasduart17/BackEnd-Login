@@ -1,4 +1,5 @@
 import { hash } from 'bcryptjs'
+import { PrismaClient } from '@prisma/client'
 
 
 interface UserRequest{
@@ -8,13 +9,28 @@ interface UserRequest{
 }
 
 
+
+
+
+
 class CreateUserUseCase {
 
     async execute({name, username, password}: UserRequest){
 
+
+        const prisma = new PrismaClient()
+
         // Verificar se o Usuario existe 
 
-        if(username === "tomas1"){
+
+        const checkUser = await prisma.user.findUnique({
+            where:{
+                username
+            }
+        })
+
+
+        if(checkUser){
             throw  new Error("User exist")
         }
 
@@ -22,8 +38,18 @@ class CreateUserUseCase {
 
         const passwordHash = await hash(password, 8); 
 
+        const user = await prisma.user.create({
+            data: {
+                name, 
+                username, 
+                password: passwordHash, 
+            }
+        })
 
-        return {name, username, passwordHash}
+
+
+
+        return user; 
     }   
 
 }
