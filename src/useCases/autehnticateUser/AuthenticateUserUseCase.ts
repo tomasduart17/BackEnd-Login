@@ -1,6 +1,7 @@
 import { compare } from "bcryptjs"
 import { sign } from "jsonwebtoken"
 import { PrismaClient } from '@prisma/client'
+import { GenerateToken } from '../../providers/generateToken'
 
 interface IRequest {
     username: string;
@@ -35,13 +36,10 @@ class AuthenticateUserUseCase{
 
         // gerar token
 
-        const token =  sign({}, "0896c374-4113-45f7-8059-dffd332660fa", {
-            subject: checkUser.id, 
-            expiresIn: "20s"
-        }); 
+        const token =  await GenerateToken(checkUser.id); 
 
 
-        return { token }
+        return { token, name: checkUser.name}
 
     }
 }

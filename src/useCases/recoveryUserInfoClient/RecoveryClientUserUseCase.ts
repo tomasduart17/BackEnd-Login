@@ -1,0 +1,7 @@
+
+
+class RecoveryClientUserUseCase{
+
+}
+
+export { RecoveryClientUserUseCase }

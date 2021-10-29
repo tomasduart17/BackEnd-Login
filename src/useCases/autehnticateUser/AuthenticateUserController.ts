@@ -8,12 +8,16 @@ class AuthenticateUserController{
 
         const authenticatedUserUseCase = new AuthenticateUserUseCase();
 
-        const token = await authenticatedUserUseCase.execute({
+        const { token,name } = await authenticatedUserUseCase.execute({
             username, 
             password,
         })
 
-        return response.json(token); 
+
+        return response.json({
+            token, 
+            name,
+        }); 
 
     }
 }
