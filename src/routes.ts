@@ -2,12 +2,14 @@ import { Router } from 'express';
 import { ensureAuthenticated } from './middlewares/ensureAuthenticated';
 import { AuthenticateUserController } from './useCases/autehnticateUser/AuthenticateUserController';
 import { CreateUserController } from './useCases/createUser/CreateUserController';
+import { RecoveryClientUserController } from './useCases/recoveryUserInfoClient/RecoveryClientUserController'; 
 
 
 const router = Router();
 
 const createUserController = new CreateUserController();
 const authenticateUserController = new AuthenticateUserController(); 
+const recoveryClientInfo = new RecoveryClientUserController(); 
 
 
 router.post('/users', createUserController.handle)
@@ -19,6 +21,8 @@ router.get("/courses", ensureAuthenticated,(request, response) => {
         {id:2, name:"HTML"}
     ]);
 })
+
+router.post("/recoveryInfo", ensureAuthenticated, recoveryClientInfo.handle) 
 
 
 export { router }
